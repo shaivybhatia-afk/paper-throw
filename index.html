@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Paper Throw</title>
+  <meta name="description" content="Crush a sheet of paper with your hand and toss it in the bin. A webcam game that runs entirely in your browser." />
+  <link rel="icon" href="assets/img/bin.png" />
+  <link rel="stylesheet" href="style.css?v=14" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <!-- Version stamp: bump APP_VERSION when files change so browsers never mix old and new scripts -->
+  <script type="importmap">
+  { "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
+    "./js/main.js": "./js/main.js?v=14",
+    "./js/audio.js": "./js/audio.js?v=14",
+    "./js/config.js": "./js/config.js?v=14",
+    "./js/crumple3d.js": "./js/crumple3d.js?v=14",
+    "./js/demos.js": "./js/demos.js?v=14",
+    "./js/game.js": "./js/game.js?v=14",
+    "./js/gestures.js": "./js/gestures.js?v=14",
+    "./js/hands.js": "./js/hands.js?v=14",
+    "./js/oneEuro.js": "./js/oneEuro.js?v=14",
+    "./js/paper.js": "./js/paper.js?v=14",
+    "./js/power.js": "./js/power.js?v=14"
+  } }
+  </script>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div id="pip" hidden>
+    <video id="cam" playsinline muted></video>
+    <canvas id="pipHands"></canvas>
+    <span>Your camera</span>
+  </div>
+
+  <!-- 1. Landing -->
+  <section id="landing" class="screen active">
+    <div class="card hero">
+      <div class="logo" aria-hidden="true"><img src="assets/img/bin.png" alt="" /></div>
+      <h1>Paper Throw</h1>
+      <p class="lead">Pick up a sheet, crush it in your fist and toss it in the bin. Your webcam follows your hand, so there is nothing to hold.</p>
+      <button id="btnStart" class="btn primary big">Start</button>
+      <p class="privacy">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span>This game uses your camera to follow your hand. Everything runs on your device. Nothing is recorded or uploaded.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 2. Instructions -->
+  <section id="instructions" class="screen">
+    <div class="card wide">
+      <h2>Three moves</h2>
+      <div class="moves">
+        <figure>
+          <canvas data-demo="pick"></canvas>
+          <figcaption><b>Pick</b>Hold your open hand over the paper pile for a moment. A sheet lifts into your hand.</figcaption>
+        </figure>
+        <figure>
+          <canvas data-demo="crush"></canvas>
+          <figcaption><b>Crush</b>Make a fist. The paper crumples into a ball by itself.</figcaption>
+        </figure>
+        <figure>
+          <canvas data-demo="throw"></canvas>
+          <figcaption><b>Throw</b>Swing toward the bin and open your hand when the power meter reaches the green band.</figcaption>
+        </figure>
+      </div>
+      <p class="tip">Use one hand. Sit back so your whole hand fits in the camera view.</p>
+      <button id="btnContinue" class="btn primary" disabled>Getting the camera ready...</button>
+    </div>
+  </section>
+
+  <!-- Camera problems -->
+  <section id="error" class="screen">
+    <div class="card">
+      <h2>Camera not available</h2>
+      <p id="errorText" class="lead"></p>
+      <div class="row">
+        <button id="btnRetryCam" class="btn primary">Try again</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Calibration -->
+  <section id="calib" class="screen top">
+    <div class="card slim">
+      <h2>Practice throw</h2>
+      <p class="why"><b>Why a practice throw?</b> Everyone throws differently. This one throw shows the game how fast your strongest throw is, so the power meter fits your arm.</p>
+      <p id="calibText" class="lead">Make a fist, swing as hard as feels comfortable, then open your hand.</p>
+      <div class="gauge"><div id="calibFill"></div></div>
+      <p class="gauge-read"><b id="calibValue">0.0</b> hand widths per second</p>
+      <p id="calibNote" class="small">Speed is measured in hand widths, so it works the same close to the camera or further back.</p>
+      <div class="row" id="calibButtons" hidden>
+        <button id="btnCalibRetry" class="btn">Throw again</button>
+        <button id="btnPlay" class="btn primary">Start playing</button>
+      </div>
+      <button id="btnSkipCalib" class="link">Skip the practice and use a standard power setting</button>
+    </div>
+  </section>
+
+  <!-- 4. Game HUD -->
+  <section id="hud" class="screen hud">
+    <div class="hud-tl">
+      <div class="chip"><span>Level</span><b id="hLevel">1</b><span>of 3</span></div>
+      <div class="throws" id="hThrows"></div>
+    </div>
+    <div class="hud-tr">
+      <div class="stat"><span>Score</span><b id="hScore">0</b></div>
+      <div class="stat streak"><span>Streak</span><b id="hStreak">0</b></div>
+      <div class="stat"><span>This level</span><b><span id="hLevelScore">0</span><small> / <span id="hGoal">5</span></small></b></div>
+    </div>
+    <div class="wind" id="hWind">
+      <svg viewBox="0 0 60 20" aria-hidden="true"><path id="hWindArrow" d="M4 10h44m-8-7 10 7-10 7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="hWindText">Calm</span>
+    </div>
+    <div class="meter" aria-label="Power">
+      <div class="meter-track"><div class="meter-zone" id="hZone"></div><div class="meter-fill" id="hMeter"></div>
+        <span class="zone-label" id="hZoneLabel">Throw here</span>
+      </div>
+      <div class="meter-title">Power</div>
+    </div>
+    <div class="pick-hint" id="hPick" hidden>Pick your paper from here</div>
+    <div class="prompt" id="hPrompt"></div>
+    <div class="toast" id="hToast"></div>
+  </section>
+
+  <!-- Level end -->
+  <section id="levelEnd" class="screen dim">
+    <div class="card">
+      <h2 id="leTitle">Level 1 cleared</h2>
+      <p id="leText" class="lead"></p>
+      <div class="row">
+        <button id="leSecondary" class="btn">Finish here</button>
+        <button id="lePrimary" class="btn primary hold">Next level</button>
+      </div>
+      <p class="small">Or hold up an open hand to carry on.</p>
+    </div>
+  </section>
+
+  <!-- Final -->
+  <section id="final" class="screen dim">
+    <div class="card">
+      <h2>Final score</h2>
+      <div class="big-score" id="fScore">0</div>
+      <p id="fText" class="lead"></p>
+      <div class="row">
+        <button id="btnShare" class="btn">Share score</button>
+        <button id="btnAgain" class="btn primary hold">Play again</button>
+      </div>
+      <button id="btnRecal" class="link">Redo the practice throw</button>
+    </div>
+  </section>
+
+  <script type="module" src="js/main.js?v=14"></script>
+</body>
+</html>
