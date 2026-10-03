@@ -222,4 +222,13 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom:
 /* even line lengths; together with keepTail() no line ends on one or two words */
 h1, h2, .lead, .small, .tip, .privacy span, figcaption, .prompt { text-wrap: balance; }
 
-#calibIntro .btn { margin-top: 4px; }
+/* practice throw */
+#calibIntro .lead { margin: 10px auto 12px; }
+#calibIntro .btn { margin-top: 10px; }
+.steps { list-style: none; padding: 0; margin: 14px auto 6px; display: grid; gap: 8px; text-align: left; max-width: 380px; }
+.steps li { display: flex; gap: 10px; align-items: center; font-size: 15px; color: var(--ink); }
+.steps b { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; color: #fff; background: var(--accent); }
+.cam-slot { width: 240px; aspect-ratio: 16 / 9; margin: 14px auto 8px; border-radius: 18px; background: rgba(18,22,43,0.08); }
+#pip.docked { position: fixed; right: auto; transform: none; z-index: 3; border-radius: 18px; }
+#pip.docked span { display: none; }
+#pip.away { visibility: hidden; }

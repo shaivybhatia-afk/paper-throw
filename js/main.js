@@ -18,7 +18,7 @@ function keepTail(text) {
 }
 // Apply to every paragraph of copy already in the page
 function tidyCopy(root = document) {
-  root.querySelectorAll('.lead, .small, .why, .tip, .privacy span, figcaption, .prompt').forEach((el) => {
+  root.querySelectorAll('.lead, .small, .tip, .privacy span, figcaption, .prompt, .steps li').forEach((el) => {
     const last = [...el.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim()).pop();
     if (last) last.textContent = keepTail(last.textContent);
   });
@@ -181,6 +181,8 @@ $('#btnHowTo').onclick = () => openHowTo(true);
 
 // Practice throw, step 1: explain it. Hands are not read yet.
 function startCalib() {
+  dockPip(false);
+  pipEl.classList.add('away'); // the preview appears in the practice box at step 2, not before
   show('calib');
   game.mode = 'calibrate';
   game.overlay = 1;
@@ -189,16 +191,17 @@ function startCalib() {
   $('#calibRun').hidden = true;
 }
 
-// Step 2: the throw itself
+// Step 2: the throw itself. The camera preview docks inside this box.
 function beginPractice() {
   $('#calibIntro').hidden = true;
   $('#calibRun').hidden = false;
+  dockPip(true);
   gestures.mode = 'calibrate';
   gestures.maxPower = calMax || CONFIG.defaultMaxPower;
   gestures.reset();
   gestures.enabled = true;
   $('#calibButtons').hidden = true;
-  $('#calibText').textContent = keepTail('Make a fist, swing, then open your hand.');
+  $('#calibText').textContent = keepTail('Your hand shows in the box once the camera sees it.');
   $('#calibValue').textContent = '0.0';
   $('#calibFill').style.width = '0';
   calibPeak = 0;
@@ -226,6 +229,22 @@ $('#btnCalibBack').onclick = startCalib;
 $('#btnSkipCalib').onclick = () => { calMax = calMax || CONFIG.defaultMaxPower; startGame(); };
 $('#btnPlay').onclick = startGame;
 
+// During the practice throw the preview sits inside the practice box. It stays its own layer
+// (laid exactly over a slot in the card) so the video never sits inside the blurred glass.
+const pipEl = $('#pip');
+let pipDocked = false;
+function dockPip(on) {
+  pipDocked = on;
+  pipEl.classList.remove('away');
+  pipEl.classList.toggle('docked', on);
+  if (!on) pipEl.removeAttribute('style');
+}
+function placePip() {
+  if (!pipDocked) return;
+  const r = $('#calibCam').getBoundingClientRect();
+  Object.assign(pipEl.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px` });
+}
+
 // Camera preview: the mirrored feed with a light trace of the tracked hand on top
 const pipCv = $('#pipHands'), pipCtx = pipCv.getContext('2d');
 const PIP_BONES = [[0, 1, 2, 3, 4], [0, 5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [0, 17, 18, 19, 20], [5, 9, 13, 17]];
@@ -251,6 +270,7 @@ function drawPip(hands) {
 }
 
 function startGame() {
+  dockPip(false);
   show('hud');
   game.overlay = 1;
   game.startGame(calMax || CONFIG.defaultMaxPower);
@@ -353,6 +373,7 @@ function loop(t) {
     }
   }
   palmContinue(dt);
+  placePip();
   if (input instanceof HandTracker) drawPip(game.hands);
 }
 requestAnimationFrame(loop);

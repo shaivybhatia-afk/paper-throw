@@ -343,7 +343,7 @@ export class Game {
     }
     if (this.mode === 'play') this.drawWorld(c);
     else this.ui.pickHint(0, 0, false);
-    if (this.mode === 'play' || this.mode === 'calibrate') this.drawHands(c);
+    if (this.mode === 'play') this.drawHands(c);
   }
 
   drawWorld(c) {
