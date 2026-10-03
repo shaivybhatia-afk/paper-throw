@@ -160,7 +160,11 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom:
 
 .meter { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: 34px; gap: 8px; }
 .meter-track { position: relative; width: 34px; height: min(44vh, 320px); border-radius: 17px; }
-.meter-fill { position: absolute; left: 4px; right: 4px; bottom: 4px; height: calc(100% - 8px); border-radius: 10px; transform-origin: bottom; transform: scaleY(0); background: rgba(255,255,255,0.95); box-shadow: 0 0 10px rgba(255,255,255,0.6); z-index: 1; }
+.meter-fill {
+  /* a true pill at every height, inset evenly so it sits concentric with the track */
+  position: absolute; left: 5px; right: 5px; bottom: 5px; height: 0;
+  border-radius: 999px; background: rgba(255,255,255,0.95); box-shadow: 0 0 10px rgba(255,255,255,0.6); z-index: 1;
+}
 .meter-fill.live { background: #fff; }
 .meter-zone { position: absolute; left: -3px; right: -3px; z-index: 2; background: rgba(48,209,88,0.38); box-shadow: inset 0 0 0 3px var(--green), 0 0 16px rgba(48,209,88,0.75); border-radius: 10px; transition: bottom .4s, height .4s; pointer-events: none; }
 .zone-label { position: absolute; left: 44px; transform: translateY(50%); z-index: 3; white-space: nowrap; padding: 5px 11px; border-radius: 999px; font-size: 13px; font-weight: 700; color: #fff; background: rgba(36,180,80,0.92); box-shadow: 0 4px 14px rgba(20,120,50,0.35); transition: bottom .4s; }
@@ -210,12 +214,12 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom:
 }
 @media (prefers-reduced-motion: reduce) { .card, .toast.show, .pick-hint { animation-duration: .01s; } }
 
-.why { background: rgba(10,132,255,0.08); border-radius: 16px; padding: 11px 14px; margin: 12px 0 4px; font-size: 14.5px; line-height: 1.45; color: var(--ink-soft); text-align: left; }
-.why b { color: var(--ink); }
 
 .howto { position: absolute; left: 16px; bottom: 22px; cursor: pointer; pointer-events: auto; font-family: var(--font); transition: transform .18s, color .15s; }
 .howto:hover { transform: scale(1.04); color: #fff; }
 @media (max-width: 640px) { .howto { bottom: 14px; left: 12px; font-size: 14px; height: 36px; padding: 0 14px; } }
 
 /* even line lengths; together with keepTail() no line ends on one or two words */
-h1, h2, .lead, .small, .why, .tip, .privacy span, figcaption, .prompt { text-wrap: balance; }
+h1, h2, .lead, .small, .tip, .privacy span, figcaption, .prompt { text-wrap: balance; }
+
+#calibIntro .btn { margin-top: 4px; }

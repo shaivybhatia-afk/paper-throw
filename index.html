@@ -6,24 +6,24 @@
   <title>Paper Throw</title>
   <meta name="description" content="Crush a sheet of paper with your hand and toss it in the bin. A webcam game that runs entirely in your browser." />
   <link rel="icon" href="assets/img/bin.png" />
-  <link rel="stylesheet" href="style.css?v=17" />
+  <link rel="stylesheet" href="style.css?v=19" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <!-- Version stamp: bump APP_VERSION when files change so browsers never mix old and new scripts -->
   <script type="importmap">
   { "imports": {
     "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
-    "./js/main.js": "./js/main.js?v=17",
-    "./js/audio.js": "./js/audio.js?v=17",
-    "./js/config.js": "./js/config.js?v=17",
-    "./js/crumple3d.js": "./js/crumple3d.js?v=17",
-    "./js/demos.js": "./js/demos.js?v=17",
-    "./js/game.js": "./js/game.js?v=17",
-    "./js/gestures.js": "./js/gestures.js?v=17",
-    "./js/hands.js": "./js/hands.js?v=17",
-    "./js/oneEuro.js": "./js/oneEuro.js?v=17",
-    "./js/paper.js": "./js/paper.js?v=17",
-    "./js/power.js": "./js/power.js?v=17"
+    "./js/main.js": "./js/main.js?v=19",
+    "./js/audio.js": "./js/audio.js?v=19",
+    "./js/config.js": "./js/config.js?v=19",
+    "./js/crumple3d.js": "./js/crumple3d.js?v=19",
+    "./js/demos.js": "./js/demos.js?v=19",
+    "./js/game.js": "./js/game.js?v=19",
+    "./js/gestures.js": "./js/gestures.js?v=19",
+    "./js/hands.js": "./js/hands.js?v=19",
+    "./js/oneEuro.js": "./js/oneEuro.js?v=19",
+    "./js/paper.js": "./js/paper.js?v=19",
+    "./js/power.js": "./js/power.js?v=19"
   } }
   </script>
 </head>
@@ -85,18 +85,25 @@
 
   <!-- 3. Calibration -->
   <section id="calib" class="screen top">
-    <div class="card slim">
+    <!-- step 1: what a practice throw is -->
+    <div class="card slim" id="calibIntro">
+      <h2>Let's do a practice throw</h2>
+      <p class="lead">Make a fist as if you are holding a paper ball, throw toward the screen, then open your hand. This sets the power meter to suit your arm.</p>
+      <button id="btnCalibGo" class="btn primary">Start practice throw</button>
+      <div><button id="btnSkipCalib" class="link">Skip and use a standard power setting</button></div>
+    </div>
+    <!-- step 2: the throw itself -->
+    <div class="card slim" id="calibRun" hidden>
       <h2>Practice throw</h2>
-      <p class="why"><b>What is a practice throw?</b> Make a fist as if you are holding a crumpled paper ball, then do one normal throwing movement toward the screen and open your hand at the end. No paper needed. It shows the game how fast your strongest comfortable throw is, so the power meter fits your arm.</p>
-      <p id="calibText" class="lead">Make a fist, swing as hard as feels comfortable, then open your hand.</p>
+      <p id="calibText" class="lead">Make a fist, swing, then open your hand.</p>
       <div class="gauge"><div id="calibFill"></div></div>
       <p class="gauge-read"><b id="calibValue">0.0</b> hand widths per second</p>
-      <p id="calibNote" class="small">Speed is measured in hand widths, so it works the same close to the camera or further back.</p>
+      <p id="calibNote" class="small">Measured in hand widths, so it works at any distance from the camera.</p>
       <div class="row" id="calibButtons" hidden>
         <button id="btnCalibRetry" class="btn">Throw again</button>
         <button id="btnPlay" class="btn primary">Start playing</button>
       </div>
-      <button id="btnSkipCalib" class="link">Skip the practice and use a standard power setting</button>
+      <div><button id="btnCalibBack" class="link">Back</button></div>
     </div>
   </section>
 
@@ -154,6 +161,6 @@
     </div>
   </section>
 
-  <script type="module" src="js/main.js?v=17"></script>
+  <script type="module" src="js/main.js?v=19"></script>
 </body>
 </html>

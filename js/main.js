@@ -85,7 +85,8 @@ const ui = {
   },
   meter(p, live) {
     const el = $('#hMeter');
-    el.style.transform = `scaleY(${p.toFixed(3)})`;
+    // grow the height (not a vertical stretch) so the rounded ends stay perfectly round
+    el.style.height = p > 0.005 ? `max(24px, calc((100% - 10px) * ${p.toFixed(3)}))` : '0px';
     el.classList.toggle('live', live);
   },
   wind(w, max) {
@@ -178,16 +179,26 @@ $('#btnContinue').onclick = () => {
 };
 $('#btnHowTo').onclick = () => openHowTo(true);
 
+// Practice throw, step 1: explain it. Hands are not read yet.
 function startCalib() {
   show('calib');
   game.mode = 'calibrate';
   game.overlay = 1;
+  gestures.enabled = false;
+  $('#calibIntro').hidden = false;
+  $('#calibRun').hidden = true;
+}
+
+// Step 2: the throw itself
+function beginPractice() {
+  $('#calibIntro').hidden = true;
+  $('#calibRun').hidden = false;
   gestures.mode = 'calibrate';
   gestures.maxPower = calMax || CONFIG.defaultMaxPower;
   gestures.reset();
   gestures.enabled = true;
   $('#calibButtons').hidden = true;
-  $('#calibText').textContent = keepTail('Make a fist, swing as hard as feels comfortable, then open your hand.');
+  $('#calibText').textContent = keepTail('Make a fist, swing, then open your hand.');
   $('#calibValue').textContent = '0.0';
   $('#calibFill').style.width = '0';
   calibPeak = 0;
@@ -209,7 +220,9 @@ function calibResult(m) {
     : 'Got it. This is now your hardest throw. Soft, medium and hard throws are measured against it.');
   $('#calibButtons').hidden = false;
 }
-$('#btnCalibRetry').onclick = startCalib;
+$('#btnCalibRetry').onclick = beginPractice;
+$('#btnCalibGo').onclick = beginPractice;
+$('#btnCalibBack').onclick = startCalib;
 $('#btnSkipCalib').onclick = () => { calMax = calMax || CONFIG.defaultMaxPower; startGame(); };
 $('#btnPlay').onclick = startGame;
 
