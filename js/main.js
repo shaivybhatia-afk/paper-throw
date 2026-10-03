@@ -137,14 +137,31 @@ function beginInput() {
 
 // ---------- screens ----------
 let stopDemos = null;
+let howToFromGame = false;
+// The How to play screen opens at the start and again from the button in the game
+function openHowTo(fromGame) {
+  howToFromGame = fromGame;
+  show('instructions');
+  stopDemos?.();
+  stopDemos = startDemos($('#instructions'), paper, bin);
+  if (fromGame) {
+    gestures.enabled = false;
+    const b = $('#btnContinue');
+    b.disabled = false;
+    b.textContent = 'Back to game';
+  }
+}
 $('#btnStart').onclick = () => {
   if (window.Howler && Howler.ctx && Howler.ctx.state === 'suspended') Howler.ctx.resume();
-  show('instructions');
-  stopDemos = startDemos($('#instructions'), paper);
+  openHowTo(false);
   beginInput(false);
 };
 $('#btnRetryCam').onclick = () => { show('instructions'); beginInput(false); };
-$('#btnContinue').onclick = () => { stopDemos?.(); startCalib(); };
+$('#btnContinue').onclick = () => {
+  stopDemos?.();
+  if (howToFromGame) { show('hud'); gestures.enabled = true; } else startCalib();
+};
+$('#btnHowTo').onclick = () => openHowTo(true);
 
 function startCalib() {
   show('calib');

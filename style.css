@@ -19,7 +19,7 @@ html, body { height: 100%; overflow: hidden; background: #202848; color: var(--i
 body { font-family: var(--font); -webkit-font-smoothing: antialiased; user-select: none; letter-spacing: -0.01em; }
 
 /* shared glass surface */
-.card, .chip, .stat, .prompt, .throws, .wind, .meter-track, .pick-hint, .btn, .privacy, .tip, .moves figure {
+.card, .chip, .stat, .prompt, .throws, .wind, .meter-track, .howto, .btn, .privacy, .tip, .moves figure {
   background: var(--glass-tint);
   -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-rim), var(--glass-lift);
@@ -62,7 +62,10 @@ body { font-family: var(--font); -webkit-font-smoothing: antialiased; user-selec
 .card.slim { max-width: 460px; padding: 22px 26px; }
 @keyframes rise { from { opacity: 0; transform: translateY(16px) scale(.97); } }
 
-.hero .logo { width: 88px; height: 88px; margin: -4px auto 10px; border-radius: 24px; display: grid; place-items: center; background: rgba(255,255,255,0.4); box-shadow: var(--glass-rim); }
+.hero .logo { width: 88px; height: 88px; margin: -4px auto 10px; display: grid; place-items: center;
+  background: linear-gradient(160deg, rgba(255,255,255,0.75), rgba(255,255,255,0.4));
+  /* continuous "squircle" corner, the way Apple rounds icons, with a gentler radius */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M100.00%2C50.00%20L99.95%2C67.23%20L99.80%2C72.72%20L99.56%2C76.68%20L99.22%2C79.86%20L98.77%2C82.55%20L98.22%2C84.89%20L97.57%2C86.95%20L96.81%2C88.78%20L95.94%2C90.43%20L94.94%2C91.90%20L93.83%2C93.22%20L92.58%2C94.40%20L91.18%2C95.46%20L89.63%2C96.39%20L87.89%2C97.20%20L85.95%2C97.91%20L83.76%2C98.51%20L81.26%2C99.01%20L78.34%2C99.40%20L74.82%2C99.69%20L70.26%2C99.89%20L63.06%2C99.99%20L36.94%2C99.99%20L29.74%2C99.89%20L25.18%2C99.69%20L21.66%2C99.40%20L18.74%2C99.01%20L16.24%2C98.51%20L14.05%2C97.91%20L12.11%2C97.20%20L10.37%2C96.39%20L8.82%2C95.46%20L7.42%2C94.40%20L6.17%2C93.22%20L5.06%2C91.90%20L4.06%2C90.43%20L3.19%2C88.78%20L2.43%2C86.95%20L1.78%2C84.89%20L1.23%2C82.55%20L0.78%2C79.86%20L0.44%2C76.68%20L0.20%2C72.72%20L0.05%2C67.23%20L0.00%2C50.00%20L0.05%2C32.77%20L0.20%2C27.28%20L0.44%2C23.32%20L0.78%2C20.14%20L1.23%2C17.45%20L1.78%2C15.11%20L2.43%2C13.05%20L3.19%2C11.22%20L4.06%2C9.57%20L5.06%2C8.10%20L6.17%2C6.78%20L7.42%2C5.60%20L8.82%2C4.54%20L10.37%2C3.61%20L12.11%2C2.80%20L14.05%2C2.09%20L16.24%2C1.49%20L18.74%2C0.99%20L21.66%2C0.60%20L25.18%2C0.31%20L29.74%2C0.11%20L36.94%2C0.01%20L63.06%2C0.01%20L70.26%2C0.11%20L74.82%2C0.31%20L78.34%2C0.60%20L81.26%2C0.99%20L83.76%2C1.49%20L85.95%2C2.09%20L87.89%2C2.80%20L89.63%2C3.61%20L91.18%2C4.54%20L92.58%2C5.60%20L93.83%2C6.78%20L94.94%2C8.10%20L95.94%2C9.57%20L96.81%2C11.22%20L97.57%2C13.05%20L98.22%2C15.11%20L98.77%2C17.45%20L99.22%2C20.14%20L99.56%2C23.32%20L99.80%2C27.28%20L99.95%2C32.77%20Z%27/%3E%3C/svg%3E") center / 100% 100% no-repeat; mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M100.00%2C50.00%20L99.95%2C67.23%20L99.80%2C72.72%20L99.56%2C76.68%20L99.22%2C79.86%20L98.77%2C82.55%20L98.22%2C84.89%20L97.57%2C86.95%20L96.81%2C88.78%20L95.94%2C90.43%20L94.94%2C91.90%20L93.83%2C93.22%20L92.58%2C94.40%20L91.18%2C95.46%20L89.63%2C96.39%20L87.89%2C97.20%20L85.95%2C97.91%20L83.76%2C98.51%20L81.26%2C99.01%20L78.34%2C99.40%20L74.82%2C99.69%20L70.26%2C99.89%20L63.06%2C99.99%20L36.94%2C99.99%20L29.74%2C99.89%20L25.18%2C99.69%20L21.66%2C99.40%20L18.74%2C99.01%20L16.24%2C98.51%20L14.05%2C97.91%20L12.11%2C97.20%20L10.37%2C96.39%20L8.82%2C95.46%20L7.42%2C94.40%20L6.17%2C93.22%20L5.06%2C91.90%20L4.06%2C90.43%20L3.19%2C88.78%20L2.43%2C86.95%20L1.78%2C84.89%20L1.23%2C82.55%20L0.78%2C79.86%20L0.44%2C76.68%20L0.20%2C72.72%20L0.05%2C67.23%20L0.00%2C50.00%20L0.05%2C32.77%20L0.20%2C27.28%20L0.44%2C23.32%20L0.78%2C20.14%20L1.23%2C17.45%20L1.78%2C15.11%20L2.43%2C13.05%20L3.19%2C11.22%20L4.06%2C9.57%20L5.06%2C8.10%20L6.17%2C6.78%20L7.42%2C5.60%20L8.82%2C4.54%20L10.37%2C3.61%20L12.11%2C2.80%20L14.05%2C2.09%20L16.24%2C1.49%20L18.74%2C0.99%20L21.66%2C0.60%20L25.18%2C0.31%20L29.74%2C0.11%20L36.94%2C0.01%20L63.06%2C0.01%20L70.26%2C0.11%20L74.82%2C0.31%20L78.34%2C0.60%20L81.26%2C0.99%20L83.76%2C1.49%20L85.95%2C2.09%20L87.89%2C2.80%20L89.63%2C3.61%20L91.18%2C4.54%20L92.58%2C5.60%20L93.83%2C6.78%20L94.94%2C8.10%20L95.94%2C9.57%20L96.81%2C11.22%20L97.57%2C13.05%20L98.22%2C15.11%20L98.77%2C17.45%20L99.22%2C20.14%20L99.56%2C23.32%20L99.80%2C27.28%20L99.95%2C32.77%20Z%27/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
 .hero .logo img { width: 58px; transform: rotate(-6deg); }
 h1 { font-size: clamp(40px, 7vw, 58px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
 h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 8px; }
@@ -89,7 +92,8 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom:
 }
 .btn.big { font-size: 20px; padding: 16px 58px; }
 .btn.hold::after { content: ""; position: absolute; left: 0; bottom: 0; height: 4px; width: calc(var(--hold, 0) * 100%); background: rgba(255,255,255,0.95); }
-.link { background: none; border: 0; color: var(--blue); font: 500 14px var(--font); margin-top: 14px; cursor: pointer; }
+.link { background: none; border: 0; color: var(--ink-soft); font: 600 14px var(--font); margin-top: 16px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.link:hover { color: var(--ink); }
 .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
 .moves { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 14px; }
@@ -116,16 +120,16 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom:
 .hud-tl, .hud-tr { position: absolute; top: 16px; display: flex; gap: 10px; align-items: center; }
 .hud-tl { left: 16px; flex-direction: column; align-items: flex-start; }
 .hud-tr { right: 16px; }
-.chip { display: flex; gap: 6px; align-items: baseline; padding: 9px 16px; border-radius: 999px; color: var(--ink-soft); font-weight: 600; }
+.chip { display: flex; gap: 6px; align-items: baseline; padding: 9px 16px; border-radius: 16px; color: var(--ink-soft); font-weight: 600; }
 .chip b { font-size: 22px; color: var(--ink); }
-.throws { display: flex; gap: 10px; align-items: center; padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--ink); }
+.throws { display: flex; gap: 10px; align-items: center; padding: 8px 14px; border-radius: 16px; font-size: 14px; font-weight: 600; color: var(--ink); }
 .throws em { font-style: normal; white-space: nowrap; }
 .throws .dots { display: flex; gap: 6px; }
 .throws i { width: 13px; height: 13px; border-radius: 50%; background: rgba(18,22,43,0.14); }
 .throws i.hit { background: var(--accent); }
 .throws i.miss { background: rgba(18,22,43,0.4); }
 .throws i.now { box-shadow: inset 0 0 0 2px var(--blue); background: rgba(10,132,255,0.15); }
-.stat { padding: 7px 16px 9px; text-align: center; min-width: 78px; border-radius: 22px; }
+.stat { padding: 7px 16px 9px; text-align: center; min-width: 78px; border-radius: 17px; }
 .stat > span { display: block; font-size: 11px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; color: var(--ink-soft); }
 .stat b { font-size: 26px; font-weight: 700; line-height: 1.1; white-space: nowrap; letter-spacing: -0.02em; }
 .stat small { font-size: 16px; color: var(--ink-soft); }
@@ -147,16 +151,17 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom:
 .prompt { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); padding: 13px 24px; border-radius: 999px; font-weight: 600; font-size: 17px; max-width: calc(100% - 32px); text-align: center; transition: opacity .25s; }
 .prompt:empty { opacity: 0; }
 
-/* label floating over the paper stack at the start of each throw */
+/* label floating over the paper stack: box and pointer are one shape (same fill, one shadow) */
 .pick-hint {
-  position: absolute; transform: translate(-50%, -100%);
-  padding: 9px 16px; border-radius: 999px; font-size: 15px; font-weight: 600; color: var(--ink); white-space: nowrap;
-  transition: opacity .3s; animation: bob 1.6s ease-in-out infinite;
+  position: absolute; transform: translate(-50%, calc(-100% - 10px));
+  padding: 9px 16px; border-radius: 12px; font-size: 15px; font-weight: 600; color: #fff; white-space: nowrap;
+  background: var(--accent);
+  filter: drop-shadow(0 6px 14px rgba(8, 14, 44, 0.3));
+  animation: bob 1.6s ease-in-out infinite;
 }
 .pick-hint::after {
-  content: ""; position: absolute; left: 50%; bottom: -7px; width: 14px; height: 14px; transform: translateX(-50%) rotate(45deg);
-  background: rgba(255,255,255,0.4); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-  border-radius: 3px; box-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+  content: ""; position: absolute; left: 50%; top: calc(100% - 1px); transform: translateX(-50%);
+  border: 9px solid transparent; border-top-color: var(--accent); border-bottom: 0;
 }
 @keyframes bob { 50% { margin-top: -6px; } }
 
@@ -189,3 +194,7 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom:
 
 .why { background: rgba(10,132,255,0.08); border-radius: 16px; padding: 11px 14px; margin: 12px 0 4px; font-size: 14.5px; line-height: 1.45; color: var(--ink-soft); text-align: left; }
 .why b { color: var(--ink); }
+
+.howto { position: absolute; left: 16px; bottom: 22px; padding: 10px 16px; border-radius: 14px; font: 600 14px var(--font); color: var(--ink); cursor: pointer; pointer-events: auto; transition: transform .18s; }
+.howto:hover { transform: scale(1.04); }
+@media (max-width: 640px) { .howto { bottom: 14px; left: 12px; font-size: 13px; padding: 8px 12px; } }
