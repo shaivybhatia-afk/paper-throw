@@ -9,6 +9,21 @@ import { mapPower } from './power.js';
 import { startDemos } from './demos.js';
 
 const $ = (s) => document.querySelector(s);
+// Keep the last three words of a sentence together, so no line ends with one or two lonely words
+function keepTail(text) {
+  const m = String(text).match(/^(\s*)([\s\S]*?)(\s*)$/);
+  const words = m[2].split(/ +/);
+  if (words.length < 5) return text;
+  return m[1] + words.slice(0, -3).join(' ') + ' ' + words.slice(-3).join('\u00A0') + m[3];
+}
+// Apply to every paragraph of copy already in the page
+function tidyCopy(root = document) {
+  root.querySelectorAll('.lead, .small, .why, .tip, .privacy span, figcaption, .prompt').forEach((el) => {
+    const last = [...el.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim()).pop();
+    if (last) last.textContent = keepTail(last.textContent);
+  });
+}
+tidyCopy();
 const store = {
   get(k, d) { try { const v = localStorage.getItem('paperThrow.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
   set(k, v) { try { localStorage.setItem('paperThrow.' + k, JSON.stringify(v)); } catch { /* private mode */ } },
@@ -52,7 +67,7 @@ const ui = {
     el.hidden = !show;
     if (show) { el.style.left = `${x}px`; el.style.top = `${y}px`; }
   },
-  prompt(t) { const el = $('#hPrompt'); if (el.textContent !== t) el.textContent = t; },
+  prompt(t) { t = keepTail(t); const el = $('#hPrompt'); if (el.textContent !== t) el.textContent = t; },
   toast(t, kind = '') {
     const el = $('#hToast');
     el.className = 'toast';
@@ -121,11 +136,11 @@ function inputReady() {
 function inputFailed(e) {
   console.error(e);
   const name = e && e.name;
-  $('#errorText').textContent =
+  $('#errorText').textContent = keepTail(
     name === 'NotAllowedError' ? 'Camera access was blocked. Allow the camera for this page (the camera icon in the address bar), then try again. If you opened the game inside another app, open it in Chrome or Safari instead.'
     : name === 'NotFoundError' ? 'We could not find a camera on this device. Plug one in and try again.'
     : name === 'NotReadableError' ? 'Another app seems to be using the camera. Close it and try again.'
-    : 'Hand tracking could not load. Check your internet connection and try again.';
+    : 'Hand tracking could not load. Check your internet connection and try again.');
   show('error');
 }
 
@@ -172,7 +187,7 @@ function startCalib() {
   gestures.reset();
   gestures.enabled = true;
   $('#calibButtons').hidden = true;
-  $('#calibText').textContent = 'Make a fist, swing as hard as feels comfortable, then open your hand.';
+  $('#calibText').textContent = keepTail('Make a fist, swing as hard as feels comfortable, then open your hand.');
   $('#calibValue').textContent = '0.0';
   $('#calibFill').style.width = '0';
   calibPeak = 0;
@@ -181,7 +196,7 @@ function startCalib() {
 let calibPeak = 0;
 function calibResult(m) {
   if (m.raw < 3) {
-    $('#calibText').textContent = 'That one was very gentle. Make a fist and give it a proper flick.';
+    $('#calibText').textContent = keepTail('That one was very gentle. Make a fist and give it a proper flick.');
     gestures.reset();
     return;
   }
@@ -189,9 +204,9 @@ function calibResult(m) {
   store.set('calMax', calMax);
   $('#calibValue').textContent = m.raw.toFixed(1);
   $('#calibFill').style.width = Math.min(100, (m.raw / 30) * 100) + '%';
-  $('#calibText').textContent = m.dropout
+  $('#calibText').textContent = keepTail(m.dropout
     ? 'Nice and fast. Your hand moved so quickly the camera lost it for a moment, which we count as a release.'
-    : 'Got it. This is now your hardest throw. Soft, medium and hard throws are measured against it.';
+    : 'Got it. This is now your hardest throw. Soft, medium and hard throws are measured against it.');
   $('#calibButtons').hidden = false;
 }
 $('#btnCalibRetry').onclick = startCalib;
@@ -236,12 +251,12 @@ function levelEnd(r) {
   if (r.cleared) {
     celebrate();
     $('#leTitle').textContent = `Level ${nextLevel} cleared`;
-    $('#leText').textContent = `You scored ${r.levelScore} points this level. The bin is moving further back.`;
+    $('#leText').textContent = keepTail(`You scored ${r.levelScore} points this level. The bin is moving further back.`);
     $('#lePrimary').textContent = `Start level ${nextLevel + 1}`;
     leAction = () => { show('hud'); game.startLevel(nextLevel); };
   } else {
     $('#leTitle').textContent = 'Not quite';
-    $('#leText').textContent = `You scored ${r.levelScore} of ${CONFIG.goalPerLevel} points. Hits in a row are worth more, so keep a streak going.`;
+    $('#leText').textContent = keepTail(`You scored ${r.levelScore} of ${CONFIG.goalPerLevel} points. Hits in a row are worth more, so keep a streak going.`);
     $('#lePrimary').textContent = 'Try this level again';
     leAction = () => { game.total -= r.levelScore; show('hud'); game.startLevel(r.level); };
   }
@@ -271,8 +286,8 @@ function finish(total, allClear) {
   const best = Math.max(total, store.get('best', 0));
   store.set('best', best);
   $('#fScore').textContent = total;
-  $('#fText').textContent = (allClear ? 'You cleared all three bins. ' : '') +
-    (total >= best && total > 0 ? 'That is your best so far.' : `Your best is ${best}.`);
+  $('#fText').textContent = keepTail((allClear ? 'You cleared all three bins. ' : '') +
+    (total >= best && total > 0 ? 'That is your best so far.' : `Your best is ${best}.`));
   show('final');
   lastScore = total;
 }

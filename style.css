@@ -216,3 +216,6 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom:
 .howto { position: absolute; left: 16px; bottom: 22px; cursor: pointer; pointer-events: auto; font-family: var(--font); transition: transform .18s, color .15s; }
 .howto:hover { transform: scale(1.04); color: #fff; }
 @media (max-width: 640px) { .howto { bottom: 14px; left: 12px; font-size: 14px; height: 36px; padding: 0 14px; } }
+
+/* even line lengths; together with keepTail() no line ends on one or two words */
+h1, h2, .lead, .small, .why, .tip, .privacy span, figcaption, .prompt { text-wrap: balance; }
