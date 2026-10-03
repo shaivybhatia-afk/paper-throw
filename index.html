@@ -6,23 +6,24 @@
   <title>Paper Throw</title>
   <meta name="description" content="Crush a sheet of paper with your hand and toss it in the bin. A webcam game that runs entirely in your browser." />
   <link rel="icon" href="assets/img/bin.png" />
-  <link rel="stylesheet" href="style.css?v=15" />
+  <link rel="stylesheet" href="style.css?v=16" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <!-- Version stamp: bump APP_VERSION when files change so browsers never mix old and new scripts -->
   <script type="importmap">
   { "imports": {
     "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
-    "./js/main.js": "./js/main.js?v=15",
-    "./js/audio.js": "./js/audio.js?v=15",
-    "./js/config.js": "./js/config.js?v=15",
-    "./js/crumple3d.js": "./js/crumple3d.js?v=15",
-    "./js/demos.js": "./js/demos.js?v=15",
-    "./js/game.js": "./js/game.js?v=15",
-    "./js/gestures.js": "./js/gestures.js?v=15",
-    "./js/hands.js": "./js/hands.js?v=15",
-    "./js/oneEuro.js": "./js/oneEuro.js?v=15",
-    "./js/paper.js": "./js/paper.js?v=15",
-    "./js/power.js": "./js/power.js?v=15"
+    "./js/main.js": "./js/main.js?v=16",
+    "./js/audio.js": "./js/audio.js?v=16",
+    "./js/config.js": "./js/config.js?v=16",
+    "./js/crumple3d.js": "./js/crumple3d.js?v=16",
+    "./js/demos.js": "./js/demos.js?v=16",
+    "./js/game.js": "./js/game.js?v=16",
+    "./js/gestures.js": "./js/gestures.js?v=16",
+    "./js/hands.js": "./js/hands.js?v=16",
+    "./js/oneEuro.js": "./js/oneEuro.js?v=16",
+    "./js/paper.js": "./js/paper.js?v=16",
+    "./js/power.js": "./js/power.js?v=16"
   } }
   </script>
 </head>
@@ -121,7 +122,7 @@
       <div class="meter-title">Power</div>
     </div>
     <div class="pick-hint" id="hPick" hidden>Pick your paper from here</div>
-    <button class="howto" id="btnHowTo">How to play</button>
+    <button class="howto" id="btnHowTo">How to play?</button>
     <div class="prompt" id="hPrompt"></div>
     <div class="toast" id="hToast"></div>
   </section>
@@ -153,6 +154,6 @@
     </div>
   </section>
 
-  <script type="module" src="js/main.js?v=15"></script>
+  <script type="module" src="js/main.js?v=16"></script>
 </body>
 </html>

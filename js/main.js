@@ -234,7 +234,7 @@ function levelEnd(r) {
   if (r.cleared && r.last) return finish(r.total, true);
   show('levelEnd');
   if (r.cleared) {
-    audio.play('chime', 0.5);
+    celebrate();
     $('#leTitle').textContent = `Level ${nextLevel} cleared`;
     $('#leText').textContent = `You scored ${r.levelScore} points this level. The bin is moving further back.`;
     $('#lePrimary').textContent = `Start level ${nextLevel + 1}`;
@@ -249,7 +249,22 @@ function levelEnd(r) {
 }
 $('#lePrimary').onclick = () => leAction && leAction();
 
+// Level cleared: confetti from both sides, then a burst from the middle, with applause
+function celebrate() {
+  audio.play('applause', 0.6);
+  const confetti = window.confetti;
+  if (!confetti) return;
+  const colors = ['#ffffff', '#ffe66d', '#0a84ff', '#30d158', '#ff9f0a', '#bf5af2'];
+  const base = { particleCount: 80, spread: 70, startVelocity: 55, ticks: 280, gravity: 0.9, scalar: 1.05, colors, zIndex: 60, disableForReducedMotion: true };
+  confetti({ ...base, angle: 60, origin: { x: 0, y: 0.8 } });
+  confetti({ ...base, angle: 120, origin: { x: 1, y: 0.8 } });
+  setTimeout(() => confetti({ ...base, particleCount: 140, spread: 120, startVelocity: 38, origin: { x: 0.5, y: 0.32 } }), 280);
+  setTimeout(() => confetti({ ...base, particleCount: 50, angle: 75, spread: 55, origin: { x: 0.1, y: 0.9 } }), 600);
+  setTimeout(() => confetti({ ...base, particleCount: 50, angle: 105, spread: 55, origin: { x: 0.9, y: 0.9 } }), 600);
+}
+
 function finish(total, allClear) {
+  if (allClear) celebrate();
   game.mode = 'menu';
   gestures.enabled = false;
   audio.fan(0, 0);

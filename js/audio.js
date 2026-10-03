@@ -11,6 +11,7 @@ export class GameAudio {
       thud: mk('thud', { volume: 0.8 }),
       pick: mk('pick', { volume: 0.5 }),
       chime: mk('chime', { volume: 0.45 }),
+      applause: mk('applause', { volume: 0.6 }),
       fan: mk('fan', { loop: true, volume: 0 }),
       amb: mk('ambience', { loop: true, volume: 0.2 }),
     };
